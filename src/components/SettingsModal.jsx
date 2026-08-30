@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Key, Check, Info } from 'lucide-react';
 import { getStoredApiKey, setStoredApiKey } from '../api/railRadar';
 
 export default function SettingsModal({ isOpen, onClose }) {
   const [apiKey, setApiKey] = useState(getStoredApiKey());
   const [savedMsg, setSavedMsg] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -19,8 +29,8 @@ export default function SettingsModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-card">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3><Key size={20} /> API Key Configuration</h3>
           <button className="close-btn" onClick={onClose}><X size={20} /></button>

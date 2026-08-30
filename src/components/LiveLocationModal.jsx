@@ -9,6 +9,16 @@ export default function LiveLocationModal({ trainNumber, isOpen, onClose, onOpen
   const [telemetry, setTelemetry] = useState(null);
 
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
     if (isOpen && trainNumber) {
       setLoading(true);
       setError(null);
@@ -32,8 +42,12 @@ export default function LiveLocationModal({ trainNumber, isOpen, onClose, onOpen
   if (!isOpen || !trainNumber) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-card shadow-glass" style={{ maxWidth: '720px', maxHeight: '90vh', overflowY: 'auto' }}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal-card shadow-glass"
+        style={{ maxWidth: '720px', maxHeight: '90vh', overflowY: 'auto' }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span className="badge badge-train-type">{trainNumber}</span>
