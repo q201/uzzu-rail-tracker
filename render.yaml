@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: uzzu-rail-tracker-backend
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: RAILRADAR_API_KEY
+        value: rg_d21b4cd5252145dd8c55ab340bb81029
+      - key: PORT
+        value: 10000

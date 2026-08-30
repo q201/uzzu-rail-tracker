@@ -2,7 +2,8 @@
    UZZU RAIL TRACKER - HIGH AVAILABILITY RAILRADAR API CLIENT
    ========================================================================== */
 
-// Read from Environment Variables (No hardcoding)
+// Read Environment Variables
+const RENDER_BACKEND_URL = import.meta.env.VITE_RENDER_BACKEND_URL || '';
 const ENV_KEY = import.meta.env.VITE_RAILRADAR_API_KEY || '';
 const ENV_BASE_URL = import.meta.env.VITE_RAILRADAR_BASE_URL || 'https://api.railradar.in/v1';
 
@@ -16,9 +17,15 @@ export const setStoredApiKey = (key) => {
   return cleanKey;
 };
 
-const BASE_URL = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? '/rr-api'
-  : ENV_BASE_URL;
+// Base URL Routing:
+// 1. If Render backend URL is configured, use Render Proxy (/api)
+// 2. If running locally on dev server, use Vite Proxy (/rr-api)
+// 3. Otherwise default to direct RailRadar URL
+const BASE_URL = RENDER_BACKEND_URL
+  ? `${RENDER_BACKEND_URL.replace(/\/$/, '')}/api`
+  : (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+    ? '/rr-api'
+    : ENV_BASE_URL;
 
 async function request(endpoint, params = {}) {
   const apiKey = getStoredApiKey();
@@ -32,13 +39,17 @@ async function request(endpoint, params = {}) {
   });
 
   try {
+    const headers = { 'Content-Type': 'application/json' };
+    
+    // Only send Authorization header if requesting directly (not through Render proxy)
+    if (!RENDER_BACKEND_URL && apiKey) {
+      headers['Authorization'] = `Bearer ${apiKey}`;
+      headers['X-API-Key'] = apiKey;
+    }
+
     const response = await fetch(url.toString(), {
       method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'X-API-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
+      headers
     });
 
     const latency = Math.round(performance.now() - startTime);
