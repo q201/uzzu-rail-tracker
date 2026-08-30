@@ -1188,6 +1188,166 @@ body {
 .text-rose { color: var(--color-danger); }
 .mt-3 { margin-top: 12px; }
 
+/* Train Card Mobile-Optimized Grid */
+.train-card-item {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.train-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.train-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.train-card-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.35;
+}
+
+.train-card-timings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  gap: 12px;
+}
+
+.time-node {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-node.align-right {
+  text-align: right;
+}
+
+.time-val {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.time-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.time-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-primary);
+  flex: 1;
+  max-width: 140px;
+}
+
+.dur-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.route-arrow-line {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 2px 0;
+}
+
+.route-arrow-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border-color);
+  z-index: 0;
+}
+
+.route-arrow-line svg {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  padding: 0 4px;
+}
+
+.halts-text {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.train-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.runs-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.runs-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.day-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: rgba(2, 132, 199, 0.12);
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.daily-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-success);
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.track-btn {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
   .main-content {
     padding: 16px 12px;
@@ -1225,5 +1385,18 @@ body {
   }
   .swap-btn {
     align-self: center;
+  }
+  .train-card-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .track-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .station-table th:nth-child(2),
+  .station-table td:nth-child(2) {
+    display: none;
   }
 }

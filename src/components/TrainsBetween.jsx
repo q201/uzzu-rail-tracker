@@ -264,7 +264,7 @@ export default function TrainsBetween({ onSelectTrainToTrack }) {
 
       {trainsList && !loading && (
         <div className="results-container">
-          <div className="results-meta-bar" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', alignItems: 'center' }}>
+          <div className="results-meta-bar" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
             <span style={{ fontWeight: 800, fontSize: '1.1rem' }}>
               Direct Trains Found ({trainsList.trains?.length || trainsList.count || 0})
             </span>
@@ -286,69 +286,62 @@ export default function TrainsBetween({ onSelectTrainToTrack }) {
               return (
                 <div
                   key={idx}
-                  className="hero-card shadow-glass"
-                  style={{ padding: '22px', cursor: 'pointer', transition: 'border-color 0.2s ease' }}
+                  className="hero-card shadow-glass train-card-item"
                   onClick={() => handleTrainClick(trainNumber)}
                   title="Click to track live satellite location"
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                    <div>
-                      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <span className="badge badge-train-type">{trainNumber}</span>
-                        <span className="pf-tag">{trainType}</span>
-                      </div>
-                      <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginTop: '4px' }}>{trainName}</h3>
+                  {/* Train Header: Number, Badges & Title */}
+                  <div className="train-card-header">
+                    <div className="train-badges-row">
+                      <span className="badge badge-train-type">{trainNumber}</span>
+                      <span className="pf-tag">{trainType}</span>
+                    </div>
+                    <h3 className="train-card-title">{trainName}</h3>
+                  </div>
+
+                  {/* Train Timing Route Box */}
+                  <div className="train-card-timings">
+                    <div className="time-node">
+                      <span className="time-val">{depTime}</span>
+                      <span className="time-lbl">Departure</span>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '1.2rem', fontWeight: 800 }}>{depTime}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Departure</div>
+                    <div className="time-connector">
+                      <span className="dur-badge"><Clock size={12} /> {durText}</span>
+                      <div className="route-arrow-line">
+                        <ArrowRight size={14} />
                       </div>
+                      <span className="halts-text"><GitCommit size={11} /> {halts} Halts</span>
+                    </div>
 
-                      <div style={{ textAlign: 'center', color: 'var(--color-primary)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Clock size={14} />
-                          <span style={{ fontSize: '0.8rem', fontWeight: 700 }}>{durText}</span>
-                        </div>
-                        <ArrowRight size={18} style={{ margin: '2px auto' }} />
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                          <GitCommit size={12} style={{ display: 'inline', marginRight: '3px' }} />
-                          {halts} Halts
-                        </div>
-                      </div>
-
-                      <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '1.2rem', fontWeight: 800 }}>{arrTime}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Arrival</div>
-                      </div>
+                    <div className="time-node align-right">
+                      <span className="time-val">{arrTime}</span>
+                      <span className="time-lbl">Arrival</span>
                     </div>
                   </div>
 
-                  <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap', maxWidth: '100%' }}>
-                      <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600, marginRight: '4px' }}>Runs:</span>
+                  {/* Card Footer: Running Days & Action Button */}
+                  <div className="train-card-footer">
+                    <div className="runs-wrapper">
+                      <span className="runs-label">Runs:</span>
                       {item.train?.runDays && item.train.runDays.length < 7 ? (
                         item.train.runDays.map((day, di) => (
-                          <span key={di} style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--color-primary)', background: 'rgba(2,132,199,0.12)', padding: '2px 5px', borderRadius: '4px', whiteSpace: 'nowrap' }}>
+                          <span key={di} className="day-badge">
                             {day.slice(0, 3)}
                           </span>
                         ))
                       ) : (
-                        <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-success)', background: 'rgba(16,185,129,0.12)', padding: '2px 8px', borderRadius: '4px' }}>
-                          Daily Run
-                        </span>
+                        <span className="daily-badge">Daily Run</span>
                       )}
                     </div>
 
                     <button
                       type="button"
-                      className="primary-btn"
-                      style={{ padding: '6px 14px', fontSize: '0.8rem' }}
+                      className="primary-btn track-btn"
                       onClick={(e) => { e.stopPropagation(); handleTrainClick(trainNumber); }}
                     >
                       <Navigation2 size={14} />
-                      <span>Track Live Location</span>
+                      <span>Track Live</span>
                     </button>
                   </div>
                 </div>
