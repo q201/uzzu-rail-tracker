@@ -16,9 +16,6 @@ concurrency:
 
 jobs:
   build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -37,6 +34,7 @@ jobs:
         env:
           VITE_RAILRADAR_API_KEY: ${{ secrets.VITE_RAILRADAR_API_KEY || 'rg_d21b4cd5252145dd8c55ab340bb81029' }}
           VITE_RAILRADAR_BASE_URL: ${{ secrets.VITE_RAILRADAR_BASE_URL || 'https://api.railradar.in/v1' }}
+          VITE_RENDER_BACKEND_URL: ${{ secrets.VITE_RENDER_BACKEND_URL || '' }}
         run: npm run build
 
       - name: Setup GitHub Pages
