@@ -326,16 +326,18 @@ export default function TrainsBetween({ onSelectTrainToTrack }) {
                   </div>
 
                   <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Running Days:</span>
-                      {item.train?.runDays ? (
+                    <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'wrap', maxWidth: '100%' }}>
+                      <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 600, marginRight: '4px' }}>Runs:</span>
+                      {item.train?.runDays && item.train.runDays.length < 7 ? (
                         item.train.runDays.map((day, di) => (
-                          <span key={di} style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-primary)', background: 'rgba(0,242,254,0.1)', padding: '2px 6px', borderRadius: '4px' }}>
-                            {day}
+                          <span key={di} style={{ fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--color-primary)', background: 'rgba(2,132,199,0.12)', padding: '2px 5px', borderRadius: '4px', whiteSpace: 'nowrap' }}>
+                            {day.slice(0, 3)}
                           </span>
                         ))
                       ) : (
-                        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-success)' }}>Daily Run</span>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-success)', background: 'rgba(16,185,129,0.12)', padding: '2px 8px', borderRadius: '4px' }}>
+                          Daily Run
+                        </span>
                       )}
                     </div>
 

@@ -38,34 +38,29 @@ async function request(endpoint, params = {}) {
     }
   });
 
-  try {
-    const headers = { 'Content-Type': 'application/json' };
-    
-    // Only send Authorization header if requesting directly (not through Render proxy)
-    if (!RENDER_BACKEND_URL && apiKey) {
-      headers['Authorization'] = `Bearer ${apiKey}`;
-      headers['X-API-Key'] = apiKey;
-    }
-
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers
-    });
-
-    const latency = Math.round(performance.now() - startTime);
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const json = await response.json();
-    json._latency = latency;
-    return json;
-  } catch (error) {
-    // Silent fallback to guarantee 100% UI stability without ugly console warnings
-    return getFallbackData(endpoint, params);
+  const headers = { 'Content-Type': 'application/json' };
+  
+  // Only send Authorization header if requesting directly (not through Render proxy)
+  if (!RENDER_BACKEND_URL && apiKey) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+    headers['X-API-Key'] = apiKey;
   }
+
+  const response = await fetch(url.toString(), {
+    method: 'GET',
+    headers
+  });
+
+  const latency = Math.round(performance.now() - startTime);
+
+  if (!response.ok) {
+    const errData = await response.json().catch(() => ({}));
+    throw new Error(errData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
+  }
+
+  const json = await response.json();
+  json._latency = latency;
+  return json;
 }
 
 // 1. GET /v1/trains/{number}/live (Live Train Running Status)
@@ -151,82 +146,4 @@ export async function fetchSuburbanTrains(city = 'MUMBAI') {
 // 16. GET /v1/suburban/cities (Local Train Cities)
 export async function fetchSuburbanCities() {
   return request(`/suburban/cities`);
-}
-
-/**
- * Intelligent Fallback Engine
- */
-function getFallbackData(endpoint, params) {
-  if (endpoint.includes('/trains/between')) {
-    const parts = endpoint.split('/');
-    const from = parts[3] || 'BJ';
-    const to = parts[4] || 'ALJN';
-
-    return {
-      success: true,
-      data: {
-        from: { code: from, name: from },
-        to: { code: to, name: to },
-        trains: [
-          {
-            train: { number: '14314', name: `${from} - ${to} Express`, type: 'Mail/Express' },
-            from: { departure: '07:15' },
-            to: { arrival: '10:40' },
-            duration: 205,
-            totalHaltsBetween: 4
-          },
-          {
-            train: { number: '14320', name: 'Indore Weekly Express', type: 'Mail/Express' },
-            from: { departure: '13:25' },
-            to: { arrival: '15:40' },
-            duration: 135,
-            totalHaltsBetween: 2
-          },
-          {
-            train: { number: '54352', name: 'Bareilly - Aligarh Passenger', type: 'Passenger' },
-            from: { departure: '11:55' },
-            to: { arrival: '14:50' },
-            duration: 175,
-            totalHaltsBetween: 12
-          }
-        ]
-      },
-      meta: { timestamp: new Date().toISOString(), source: 'simulation-engine' }
-    };
-  }
-
-  if (endpoint.includes('/lookup/search/stations')) {
-    const q = (params.q || '').toLowerCase();
-    const mockList = [
-      { code: 'BJ', name: 'Bahjoi', city: 'Bahjoi' },
-      { code: 'ALJN', name: 'Aligarh Junction', city: 'Aligarh' },
-      { code: 'NDLS', name: 'New Delhi', city: 'Delhi' },
-      { code: 'MMCT', name: 'Mumbai Central', city: 'Mumbai' },
-      { code: 'BPL', name: 'Bhopal Jn', city: 'Bhopal' }
-    ];
-    return {
-      success: true,
-      data: mockList.filter(s => s.code.toLowerCase().includes(q) || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q))
-    };
-  }
-
-  return {
-    success: true,
-    data: {
-      station: { code: 'NDLS', name: 'New Delhi', city: 'New Delhi' },
-      trains: [
-        {
-          train: { number: '12952', name: 'Mumbai Rajdhani', type: 'Superfast Express' },
-          stop: { departure: '16:55', platform: '16' },
-          live: { delayMinutes: 0 }
-        },
-        {
-          train: { number: '12002', name: 'Bhopal Shatabdi', type: 'Shatabdi Express' },
-          stop: { departure: '06:00', platform: '1' },
-          live: { delayMinutes: 0 }
-        }
-      ]
-    },
-    meta: { timestamp: new Date().toISOString(), source: 'simulation-engine' }
-  };
 }
