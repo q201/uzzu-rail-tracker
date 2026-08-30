@@ -1195,8 +1195,25 @@ body {
   .search-card, .hero-card, .timeline-card, .pnr-header-card, .passengers-card {
     padding: 18px 14px;
   }
+  .input-group-wrapper {
+    width: 100%;
+  }
   .input-group {
-    padding: 8px 12px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    gap: 8px;
+    height: auto;
+    min-height: 48px;
+  }
+  .input-group input {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+  .input-group .primary-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+    padding: 12px 16px;
   }
   .primary-btn {
     width: 100%;
@@ -1204,6 +1221,7 @@ body {
   }
   .form-row {
     flex-direction: column;
+    gap: 12px;
   }
   .swap-btn {
     align-self: center;
