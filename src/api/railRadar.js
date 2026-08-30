@@ -2,21 +2,23 @@
    UZZU RAIL TRACKER - HIGH AVAILABILITY RAILRADAR API CLIENT
    ========================================================================== */
 
-const DEFAULT_KEY = 'rg_d21b4cd5252145dd8c55ab340bb81029';
+// Read from Environment Variables (No hardcoding)
+const ENV_KEY = import.meta.env.VITE_RAILRADAR_API_KEY || '';
+const ENV_BASE_URL = import.meta.env.VITE_RAILRADAR_BASE_URL || 'https://api.railradar.in/v1';
 
 export const getStoredApiKey = () => {
-  return localStorage.getItem('uzzu_rail_key') || DEFAULT_KEY;
+  return localStorage.getItem('uzzu_rail_key') || ENV_KEY;
 };
 
 export const setStoredApiKey = (key) => {
-  const cleanKey = key.trim() || DEFAULT_KEY;
+  const cleanKey = key.trim() || ENV_KEY;
   localStorage.setItem('uzzu_rail_key', cleanKey);
   return cleanKey;
 };
 
 const BASE_URL = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? '/rr-api'
-  : 'https://api.railradar.in/v1';
+  : ENV_BASE_URL;
 
 async function request(endpoint, params = {}) {
   const apiKey = getStoredApiKey();
