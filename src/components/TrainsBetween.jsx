@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { ArrowRightLeft, CircleDot, MapPin, Search, Repeat, ArrowRight, X, Loader2, Clock, GitCommit, Navigation2 } from 'lucide-react';
 import { fetchTrainsBetween, searchStations } from '../api/railRadar';
-import LiveLocationModal from './LiveLocationModal';
+import TrainLiveScreen from './TrainLiveScreen';
 
-export default function TrainsBetween({ onSelectTrainToTrack }) {
+export default function TrainsBetween({ onSelectTrainToTrack: _onSelectTrainToTrack }) {
   const [fromInput, setFromInput] = useState('');
   const [toInput, setToInput] = useState('');
   
@@ -17,9 +17,8 @@ export default function TrainsBetween({ onSelectTrainToTrack }) {
   const [error, setError] = useState(null);
   const [trainsList, setTrainsList] = useState(null);
 
-  // Live Location Modal State
-  const [selectedTrainNum, setSelectedTrainNum] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // Dedicated Live Tracking Screen State (replaces cramped modal)
+  const [activeTrackingTrain, setActiveTrackingTrain] = useState(null);
 
   const debounceFrom = useRef(null);
   const debounceTo = useRef(null);
@@ -146,9 +145,18 @@ export default function TrainsBetween({ onSelectTrainToTrack }) {
   };
 
   const handleTrainClick = (tNum) => {
-    setSelectedTrainNum(tNum);
-    setIsModalOpen(true);
+    setActiveTrackingTrain(tNum);
   };
+
+  // If user selected a train to track, render dedicated full-screen tracker
+  if (activeTrackingTrain) {
+    return (
+      <TrainLiveScreen
+        trainNumber={activeTrackingTrain}
+        onBack={() => setActiveTrackingTrain(null)}
+      />
+    );
+  }
 
   return (
     <div className="tab-pane active">
@@ -350,16 +358,6 @@ export default function TrainsBetween({ onSelectTrainToTrack }) {
           </div>
         </div>
       )}
-
-      {/* Live Location Modal Popup */}
-      <LiveLocationModal
-        trainNumber={selectedTrainNum}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onOpenFullTracker={(tNum) => {
-          if (onSelectTrainToTrack) onSelectTrainToTrack(tNum);
-        }}
-      />
     </div>
   );
 }

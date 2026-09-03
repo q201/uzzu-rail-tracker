@@ -1400,3 +1400,380 @@ body {
     display: none;
   }
 }
+
+/* Dedicated Live Tracking Screen */
+.live-screen-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.live-screen-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius-lg);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.back-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 40px;
+}
+
+.back-nav-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateX(-2px);
+}
+
+.nav-train-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-train-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}
+
+.refresh-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  padding: 8px 14px;
+}
+
+.refresh-nav-btn.spinning .spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sprite Tracker Card & Progress Bar */
+.live-sprite-tracker-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.sprite-top-banner {
+  margin-bottom: 24px;
+  background: var(--bg-card);
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glow);
+}
+
+.sprite-banner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.live-location-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.live-location-text {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  word-break: break-word;
+}
+
+.sprite-header-tags {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.rail-progress-track {
+  position: relative;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: visible;
+  border: 1px solid var(--border-color);
+  margin: 18px 0 12px 0;
+}
+
+.rail-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-success), var(--color-primary));
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  max-width: 100%;
+}
+
+.animated-train-sprite {
+  position: absolute;
+  top: -12px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #00C6FF, #00F2FE);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #090E1A;
+  box-shadow: 0 0 20px #00F2FE, 0 0 35px rgba(0, 242, 254, 0.6);
+  z-index: 10;
+  transition: left 0.5s ease;
+  animation: train-bounce 1.5s ease-in-out infinite;
+}
+
+.sprite-track-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sprite-mid-step {
+  color: var(--color-primary);
+}
+
+/* Timeline Nodes Styling & Responsive */
+.node-dot.node-current {
+  width: 26px;
+  height: 26px;
+  left: -27px;
+  top: 2px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 3px solid #090E1A;
+  box-shadow: 0 0 18px var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.node-dot.node-departed {
+  width: 18px;
+  height: 18px;
+  left: -23px;
+  top: 5px;
+  border-radius: 50%;
+  background: var(--color-success);
+  border: 2px solid #090E1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.node-dot.node-upcoming {
+  width: 14px;
+  height: 14px;
+  left: -21px;
+  top: 7px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--text-muted);
+  z-index: 2;
+}
+
+.node-body-current {
+  background: rgba(0, 242, 254, 0.1) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.st-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 200px;
+}
+
+.st-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.st-name-text {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+.badge-train-here {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  background: var(--color-primary);
+  color: #090E1A;
+  font-weight: 800;
+  border-radius: 4px;
+}
+
+.st-sub-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.halt-badge {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+.passing-badge {
+  color: var(--text-dim);
+}
+
+.text-success {
+  color: var(--color-success) !important;
+}
+
+/* Mobile Adjustments for Live Screen and Route Timeline */
+@media (max-width: 768px) {
+  .live-screen-nav {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .back-nav-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.95rem;
+    padding: 10px 16px;
+  }
+  .nav-train-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .nav-train-title {
+    max-width: 220px;
+    font-size: 0.9rem;
+  }
+  .refresh-nav-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+  }
+  .live-sprite-tracker-card {
+    padding: 14px 10px;
+    margin: 12px 0;
+  }
+  .sprite-top-banner {
+    padding: 14px 12px;
+  }
+  .route-timeline {
+    padding-left: 20px;
+  }
+  .route-timeline::before {
+    left: 8px;
+  }
+  .node-dot.node-current {
+    left: -22px;
+    width: 20px;
+    height: 20px;
+  }
+  .node-dot.node-departed {
+    left: -20px;
+    width: 16px;
+    height: 16px;
+  }
+  .node-dot.node-upcoming {
+    left: -19px;
+    width: 14px;
+    height: 14px;
+  }
+  .node-body {
+    padding: 12px 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .st-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 8px;
+    width: 100%;
+    gap: 8px;
+  }
+  .time-box {
+    align-items: flex-start;
+  }
+  .sprite-track-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .hero-train-info .hero-title {
+    font-size: 1.3rem;
+  }
+  .telemetry-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .telemetry-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .coach-strip {
+    gap: 4px;
+    padding-bottom: 8px;
+  }
+  .coach-box {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+}
+
